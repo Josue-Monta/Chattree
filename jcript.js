@@ -43,7 +43,7 @@ async function sendMessage() {
 // 🔗 Conexión con OpenAI
 async function obtenerRespuestaDeOpenAI(mensaje) {
     const apiKey = ""; // 🔑 Reemplaza con tu clave de OpenAI
-    const apiUrl = "https://api.openai.com/v1/chat/completions";
+    const apiUrl = "https://lingering-voice-fbeb.josuemonta20.workers.dev/";
 
     let historial = memoriaConversacion.map(m => ({ role: m.sender === "user" ? "user" : "assistant", content: m.text }));
 

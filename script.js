@@ -40,7 +40,7 @@ async function sendMessage() {
     inputField.value = "";
 }
 
-// 🔗 Conexión con OpenAI
+//  Conexión con OpenAI
 async function obtenerRespuestaDeOpenAI(mensaje) {
     const apiKey = "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"; // 🔑 Reemplaza con tu clave de OpenAI
     const apiUrl = "https://api.openai.com/v1/chat/completions";
@@ -48,7 +48,7 @@ async function obtenerRespuestaDeOpenAI(mensaje) {
     let historial = memoriaConversacion.map(m => ({ role: m.sender === "user" ? "user" : "assistant", content: m.text }));
 
     const payload = {
-        model: "gpt-3.5-turbo", // ⚡ Puedes cambiar a "gpt-4" si tienes acceso
+        model: "gpt-3.5-turbo", // 
         messages: [...historial, { role: "user", content: mensaje }],
         max_tokens: 100,
         temperature: 0.7

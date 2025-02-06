@@ -3,16 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatbot Inteligente</title>
+    <title>Chat Tree</title>
     <link rel="stylesheet" href="styles.css">
     <script defer src="script.js"></script>
 </head>
 <body>
-    <div class="chat-container">
-        <div id="chatbox"></div>
-        <div class="input-container">
-            <input type="text" id="userInput" placeholder="Escribe un mensaje..." autofocus>
-            <button onclick="sendMessage()">Enviar</button>
+    <div class="chat-wrapper">
+        <h1>🌿 Bienvenido a <span class="highlight">Chat Tree</span> 🌿</h1>
+        <div class="chat-container">
+            <div id="chatbox"></div>
+            <div class="input-container">
+                <input type="text" id="userInput" placeholder="Escribe un mensaje..." autofocus>
+                <button onclick="sendMessage()">Enviar</button>
+            </div>
         </div>
     </div>
     <button id="darkModeToggle">🌙</button>

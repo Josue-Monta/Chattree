@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => { 
     cargarMensajes();
 });
 
@@ -34,31 +34,26 @@ async function sendMessage() {
 
     addMessage(userText, "user");
 
-    let respuesta = await obtenerRespuestaDeOpenAI(userText);
+    let respuesta = await obtenerRespuestaDelWorker(userText);
     setTimeout(() => addMessage(respuesta, "bot"), 500);
 
     inputField.value = "";
 }
 
-// 🔗 Conexión con OpenAI
-async function obtenerRespuestaDeOpenAI(mensaje) {
-    const apiKey = ""; // 🔑 Reemplaza con tu clave de OpenAI
-    const apiUrl = "https://lingering-voice-fbeb.josuemonta20.workers.dev/";
+// 🔗 Conexión con el Worker de Cloudflare
+async function obtenerRespuestaDelWorker(mensaje) {
+    const apiUrl = "https://lingering-voice-fbeb.josuemonta20.workers.dev/"; // Reemplázalo con tu URL de Worker
 
     let historial = memoriaConversacion.map(m => ({ role: m.sender === "user" ? "user" : "assistant", content: m.text }));
 
     const payload = {
-        model: "gpt-3.5-turbo", // ⚡ Puedes cambiar a "gpt-4" si tienes acceso
-        messages: [...historial, { role: "user", content: mensaje }],
-        max_tokens: 100,
-        temperature: 0.7
+        messages: [...historial, { role: "user", content: mensaje }]
     };
 
     try {
         const response = await fetch(apiUrl, {
             method: "POST",
             headers: {
-                "Authorization": `Bearer ${apiKey}`,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(payload)
@@ -72,7 +67,7 @@ async function obtenerRespuestaDeOpenAI(mensaje) {
             return "Lo siento, no tengo una respuesta para eso.";
         }
     } catch (error) {
-        console.error("Error con la API de OpenAI:", error);
-        return "Error al conectar con OpenAI.";
+        console.error("Error con el Worker:", error);
+        return "Error al conectar con el servidor.";
     }
 }

@@ -1,18 +1,10 @@
-document.addEventListener("DOMContentLoaded", () => { 
+document.addEventListener("DOMContentLoaded", () => {
     cargarMensajes();
-    activarModoOscuro();
 });
 
 document.getElementById("darkModeToggle").addEventListener("click", function () {
     document.body.classList.toggle("dark-mode");
-    localStorage.setItem("dark-mode", document.body.classList.contains("dark-mode"));
 });
-
-function activarModoOscuro() {
-    if (localStorage.getItem("dark-mode") === "true") {
-        document.body.classList.add("dark-mode");
-    }
-}
 
 let memoriaConversacion = JSON.parse(localStorage.getItem("memoria")) || [];
 
@@ -42,26 +34,31 @@ async function sendMessage() {
 
     addMessage(userText, "user");
 
-    let respuesta = await obtenerRespuestaDelWorker(userText);
+    let respuesta = await obtenerRespuestaDeOpenAI(userText);
     setTimeout(() => addMessage(respuesta, "bot"), 500);
 
     inputField.value = "";
 }
 
-// 🔗 Conexión con el Worker de Cloudflare
-async function obtenerRespuestaDelWorker(mensaje) {
-    const apiUrl = "https://lingering-voice-fbeb.josuemonta20.workers.dev/"; // Reemplázalo con tu URL de Worker
+// 🔗 Conexión con OpenAI
+async function obtenerRespuestaDeOpenAI(mensaje) {
+    const apiKey = "TU_API_KEY"; // 🔑 Reemplaza con tu clave de OpenAI
+    const apiUrl = "https://api.openai.com/v1/chat/completions";
 
     let historial = memoriaConversacion.map(m => ({ role: m.sender === "user" ? "user" : "assistant", content: m.text }));
 
     const payload = {
-        messages: [...historial, { role: "user", content: mensaje }]
+        model: "gpt-3.5-turbo", // ⚡ Puedes cambiar a "gpt-4" si tienes acceso
+        messages: [...historial, { role: "user", content: mensaje }],
+        max_tokens: 100,
+        temperature: 0.7
     };
 
     try {
         const response = await fetch(apiUrl, {
             method: "POST",
             headers: {
+                "Authorization": `Bearer ${apiKey}`,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(payload)
@@ -75,7 +72,8 @@ async function obtenerRespuestaDelWorker(mensaje) {
             return "Lo siento, no tengo una respuesta para eso.";
         }
     } catch (error) {
-        console.error("Error con el Worker:", error);
-        return "Error al conectar con el servidor.";
+        console.error("Error con la API de OpenAI:", error);
+        return "Error al conectar con OpenAI.";
     }
 }
+

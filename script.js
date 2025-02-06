@@ -42,7 +42,7 @@ async function sendMessage() {
 
 // 🔗 Conexión con OpenAI
 async function obtenerRespuestaDeOpenAI(mensaje) {
-    const apiKey = "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"; // 🔑 Reemplaza con tu clave de OpenAI
+    const apiKey = ""; // 🔑 Reemplaza con tu clave de OpenAI
     const apiUrl = "https://api.openai.com/v1/chat/completions";
 
     let historial = memoriaConversacion.map(m => ({ role: m.sender === "user" ? "user" : "assistant", content: m.text }));
